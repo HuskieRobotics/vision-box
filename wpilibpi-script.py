@@ -1,3 +1,4 @@
+
 # Import the camera server
 import json
 import math
@@ -20,7 +21,7 @@ def main():
     # *************
     # NetworkTables
     # *************
-    NetworkTables.initialize(server='192.168.1.136')
+    NetworkTables.initialize(server='10.30.61.2')
     sleep(.5) #give it time to initialize
     def connectionListener(connected, info):
         print(info, "; Connected=%s" % connected)
@@ -258,8 +259,8 @@ class ThreadedCvSink:
 def getAnglesFromPixels(K,D,pixel): #K matrix; distortion coefficients; pixel: (x,y). returns angles in radians (t_x, t_y)
     #get pixel coordinates relative to center
 
-    p_x = pixel[0]
-    p_y = pixel[1]
+    p_x = pixel[0] * 2
+    p_y = pixel[1] * 2
 
     undistorted = cv2.undistortPoints(np.array([p_x,p_y], dtype=np.float64),K,D)[0][0]
 
@@ -291,5 +292,5 @@ def getHSVRange(img, hsv_low, hsv_high): #normal, easy ranges that dont wrap the
             for pixel in row:
                 if pixel[0] < 0: pixel[0] += 180
         highHue = hsv_high[0]-hsv_low[0]+180
-        cv2.inRange(transformedImg,np.array([0,hsv_low[1],hsv_low[2]]),np.array([highHue,hsv_high[1],hsv_high[2]]))
+        return cv2.inRange(transformedImg,np.array([0,hsv_low[1],hsv_low[2]]),np.array([highHue,hsv_high[1],hsv_high[2]]))
 main()
