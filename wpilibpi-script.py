@@ -286,6 +286,6 @@ def getHSVRange(img, hsv_low, hsv_high): #normal, easy ranges that dont wrap the
     if (hsv_low[0] < hsv_high[0]):
         return cv2.inRange(img, hsv_low, hsv_high) 
     else: #range where low hue > high hue, so we want to range a spectrum that isnt continous on 0-179deg
-        return cv2.inRange(img, [0,hsv_low[1],hsv_low[2]], hsv_high) + cv2.inRange(img, hsv_low, [179,hsv_high[1],hsv_high[2]])
+        return cv2.inRange(img, np.array([0,hsv_low[1],hsv_low[2]]), hsv_high) + cv2.inRange(img, hsv_low, np.array([179,hsv_high[1],hsv_high[2]]))
 
 main()
